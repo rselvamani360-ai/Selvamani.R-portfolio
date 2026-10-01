@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Selvamani R | SAP MM, S/4HANA & Procurement Analytics</title>
+  <meta name="description" content="Official Portfolio of Selvamani R - SAP MM (P2P), SAP S/4HANA, Vendor Management, 7 QC Tools, and Power BI Analytics." />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- VanillaTilt CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#2563eb',
+              600: '#1d4ed8',
+              700: '#1e40af',
+              800: '#1e3a8a',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+
+    /* Scroll reveal helpers */
+    .scroll-section { will-change: transform, opacity; }
+    .reveal-card, .reveal-heading, .reveal-line { will-change: transform, opacity; }
+    /* Keep revealed skill cards readable and prevent scroll-reverse dimming. */
+    .reveal-card { color: #0f172a; }
+    .reveal-card ul { color: #475569; }
+
+    body {
+      background-color: #fcfdfe;
+      color: #0f172a;
+      overflow-x: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(37, 99, 235, 0.45);
+      box-shadow: 0 20px 35px -8px rgba(37, 99, 235, 0.14), 0 10px 15px -3px rgba(15, 23, 42, 0.04);
+      transform: translateY(-4px);
+    }
+
+    .badge {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      border: 1px solid #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #2563eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(191, 219, 254, 0.45) 0%, rgba(248, 250, 252, 0) 70%);
+      top: -120px;
+      right: -80px;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="relative antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- 3D Canvas Background -->
+  <canvas id="webgl-canvas"></canvas>
+  <div class="hero-glow"></div>
+
+  <!-- NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-slate-200/80 transition-all">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#hero" class="font-bold text-xl tracking-tight text-slate-900 flex items-center gap-2.5">
+        <span class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-brand-500/25">SR</span>
+        <span>Selvamani R</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-600">
+        <a href="#about" class="hover:text-brand-600 transition-colors">About</a>
+        <a href="#skills" class="hover:text-brand-600 transition-colors">Skills</a>
+        <a href="#projects" class="hover:text-brand-600 transition-colors">Projects</a>
+        <a href="#education" class="hover:text-brand-600 transition-colors">Education</a>
+        <a href="#publications" class="hover:text-brand-600 transition-colors">Research</a>
+        <a href="#contact" class="hover:text-brand-600 transition-colors">Contact</a>
+      </nav>
+
+      <!-- Desktop Action Buttons -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://github.com/rselvamani360-ai" target="_blank" rel="noopener noreferrer" 
+           class="p-2 text-slate-600 hover:text-slate-950 hover:bg-slate-100 rounded-full transition-all" title="GitHub Profile">
+          <i data-lucide="github" class="w-5 h-5"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/selvamani-r-50941333a" target="_blank" rel="noopener noreferrer" 
+           class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all" title="LinkedIn Profile">
+          <i data-lucide="linkedin" class="w-5 h-5"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" class="md:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg" aria-label="Toggle Menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-3 pb-6 bg-white border-b border-slate-200 shadow-xl">
+      <div class="flex flex-col space-y-3 font-medium text-slate-700">
+        <a href="#about" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">About</a>
+        <a href="#skills" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">Skills</a>
+        <a href="#projects" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">Projects</a>
+        <a href="#education" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">Education</a>
+        <a href="#publications" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">Research</a>
+        <a href="#contact" class="mobile-link py-2 px-3 rounded hover:bg-slate-50">Contact</a>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <div class="flex gap-2">
+            <a href="https://github.com/rselvamani360-ai" target="_blank" class="p-2 bg-slate-100 rounded-full text-slate-700">
+              <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/selvamani-r-50941333a" target="_blank" class="p-2 bg-blue-50 text-blue-600 rounded-full">
+              <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="relative z-10 pt-24">
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-10">
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-7 text-center lg:text-left space-y-6 hero-anim">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-semibold shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            SAP MM • Procure-to-Pay (P2P) • SAP S/4HANA
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            Optimizing Sourcing Cycles with <span class="gradient-text">SAP MM & Procurement Analytics</span>.
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+            Techno-Commercial professional with <strong class="text-slate-900">B.E. in Mechanical Engineering</strong> and <strong class="text-slate-900">MBA in Operations & HR</strong>. Practical expertise in SAP S/4HANA MM (P2P Cycle), Vendor Management, Material Planning, and Supplier Quality Analysis using 7 QC tools and Power BI dashboards.
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#projects" class="px-6 py-3.5 bg-slate-900 hover:bg-brand-600 text-white rounded-xl font-semibold text-sm sm:text-base shadow-lg shadow-slate-900/10 transition-all duration-300 flex items-center gap-2 active:scale-95">
+              <span>View Projects</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="assets/Selvamani-R-Resume.pdf" target="_blank" rel="noopener noreferrer" class="px-6 py-3.5 bg-white hover:bg-blue-50 text-slate-700 hover:text-brand-700 border border-slate-200 hover:border-blue-200 rounded-xl font-semibold text-sm sm:text-base shadow-sm transition-all duration-300 flex items-center gap-2 active:scale-95">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+              <span>Download Resume</span>
+            </a>
+            
+          </div>
+
+          <!-- Quick Strip -->
+          <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm font-medium">
+            <a href="https://github.com/rselvamani360-ai" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-slate-200 bg-white/90 text-slate-700 shadow-sm hover:border-slate-400 hover:text-slate-950 hover:-translate-y-0.5 transition-all">
+              <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current" role="img"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.85 10.91.57.1.78-.25.78-.55v-2.13c-3.19.69-3.86-1.54-3.86-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.08 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.08.78 2.18v3.23c0 .3.2.66.79.55A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+              </span>
+              <span>GitHub</span>
+            </a>
+            <a href="https://www.linkedin.com/in/selvamani-r-50941333a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-blue-100 bg-blue-50/70 text-blue-700 shadow-sm hover:border-blue-300 hover:text-blue-800 hover:-translate-y-0.5 transition-all">
+              <span class="w-7 h-7 rounded-full bg-white flex items-center justify-center" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current text-[#0A66C2]" role="img"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V8.98h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.28 2.38 4.28 5.48v6.28ZM5.34 7.42a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM3.56 20.45h3.56V8.98H3.56v11.47ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z"/></svg>
+              </span>
+              <span>LinkedIn</span>
+            </a>
+            <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-slate-600">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i> Chennai, India
+            </span>
+          </div>
+        </div>
+
+        <!-- Right Profile Image Card -->
+        <div class="lg:col-span-5 flex justify-center hero-anim">
+          <div class="relative w-72 sm:w-80 group">
+            <div class="absolute -inset-2 bg-gradient-to-tr from-blue-400 to-indigo-300 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition duration-500"></div>
+
+            <div class="relative glass-card rounded-2xl p-4 overflow-hidden border border-slate-200/90 shadow-2xl">
+              <div class="relative w-full aspect-square rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center shadow-inner">
+                <!-- Profile photo -->
+                <img 
+                  src="assets/selvamani-profile.jpg" 
+                  alt="Selvamani R" 
+                  class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105"
+                   />
+                
+                <div class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md py-2 px-3 rounded-lg border border-white/70 shadow-sm flex items-center justify-between text-xs">
+                  <div>
+                    <p class="font-bold text-slate-900">Selvamani R</p>
+                    <p class="text-slate-500 text-[11px]">SAP MM & Analytics</p>
+                  </div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100 text-center">
+                <div class="p-2 rounded-lg bg-slate-50">
+                  <p class="text-[11px] text-slate-500">Procure-to-Pay</p>
+                  <p class="text-xs font-bold text-slate-800">ME21N / MIGO / MIRO</p>
+                </div>
+                <div class="p-2 rounded-lg bg-slate-50">
+                  <p class="text-[11px] text-slate-500">Quality Analytics</p>
+                  <p class="text-xs font-bold text-slate-800">7 QC & Power BI</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12 reveal-heading">
+          <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">About Me</h2>
+          <h3 class="text-3xl font-extrabold text-slate-900 mb-4">SAP MM, Procurement & Supply Chain Analytics</h3>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+            I am Selvamani R, a B.E. Mechanical Engineering graduate and MBA student specializing in Operations & HR. I am building my career in SAP MM, procurement and supply chain by combining hands-on SAP S/4HANA practice with Excel, Power BI, SQL and supplier quality analysis. My learning focuses on understanding the complete Procure-to-Pay cycle, vendor quotation analysis, purchasing, inventory and data-driven decision making.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal-group">
+          <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between reveal-card">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center mb-4">
+                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">SAP MM & P2P Cycle</h4>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Practical expertise executing end-to-end purchasing workflows: Purchase Requisition (PR), RFQ (ME41), Quotation Comparison (ME49), PO Creation (ME21N), Goods Receipt (MIGO), and Invoice Verification (MIRO).
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-semibold text-brand-600">
+              SAP ECC & S/4HANA Fundamentals
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between reveal-card">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
+                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">7 QC Tools & Supplier Quality</h4>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Analyzed 2,000 procurement units for defect patterns. Experienced in applying Pareto Analysis, Fishbone Diagrams, and Root Cause Analysis alongside Power BI dashboards for vendor rating.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-semibold text-indigo-600">
+              Data-Driven Vendor Management
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 relative flex flex-col justify-between reveal-card">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+                <i data-lucide="database" class="w-6 h-6"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">HANA & Business Intelligence</h4>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Experience setting up Linux SAP HANA virtual environments, managing SQL database schemas, and engineering Power BI models with DAX KPIs and KNIME automated ETL flows.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-semibold text-emerald-600">
+              HANA Studio • SQL • KNIME • Excel
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE SKILLS SECTION -->
+    <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50/50 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal-heading">
+          <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">Competencies</h2>
+          <h3 class="text-3xl font-extrabold text-slate-900">Functional & Technical Skill Matrix</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-group">
+          <div class="glass-card p-6 rounded-2xl reveal-card">
+            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="boxes" class="w-5 h-5 text-brand-600"></i> Core SAP MM
+            </h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Materials Management (MM)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Procure-to-Pay (P2P) Cycle</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Material & Vendor Master (BP)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> PR & PO Creation (ME21N)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> RFQ & ME49 Comparison</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Source Determination</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Goods Receipt (MIGO)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Invoice Verification (MIRO)</li>
+            </ul>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl reveal-card">
+            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="truck" class="w-5 h-5 text-indigo-600"></i> Procurement & SCM
+            </h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Vendor Management</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Supplier Quotation Analysis</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> PO Processing & Release</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Material Planning</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Inventory & Stock (MMBE)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Movement Types Management</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Supplier Quality Analysis</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 7 QC Tools & Fishbone</li>
+            </ul>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl reveal-card">
+            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-600"></i> Technical & BI
+            </h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Microsoft Excel (Advanced)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Power BI & DAX Calculations</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> SAP HANA Database</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> SQL / MySQL Querying</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> KNIME Analytics Workflows</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> KPI Dashboard Reporting</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Linux VirtualBox Environment</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Git & GitHub Deployment</li>
+            </ul>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl reveal-card">
+            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-amber-600"></i> Certifications
+            </h4>
+            <ul class="space-y-2 text-sm text-slate-600">
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 mt-0.5"></i><span>SAP MM Functional Training — ACTE Technologies</span></li>
+              <li class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100"><i data-lucide="file-badge" class="w-4 h-4 text-brand-600"></i><a href="assets/Selvamani-R-SAP-MM-Certificate.pdf" target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-600 hover:text-brand-800 transition">View SAP MM Certificate</a></li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 mt-0.5"></i> Business Processes in SAP S/4HANA Sourcing & Procurement — SAP Learning</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 mt-0.5"></i> SAP S/4HANA Sourcing & Procurement Fundamentals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS SECTION -->
+    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div>
+            <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">Projects & Case Studies</h2>
+            <h3 class="text-3xl font-extrabold text-slate-900">Proven Practical Execution</h3>
+          </div>
+          <a href="https://github.com/rselvamani360-ai" target="_blank" class="mt-4 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-800 transition">
+            <span>View GitHub Repos</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- PROJECT 1: SAP MM End-to-End Procurement -->
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-element border border-slate-200">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge border-blue-200 bg-blue-50 text-blue-700">SAP MM • P2P Workflow</span>
+                <a href="https://github.com/rselvamani360-ai/SAP-MM-End-to-End-Procurement" target="_blank" class="text-slate-400 hover:text-slate-900 transition">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">SAP MM - End-to-End Procurement Project</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Complete procurement practice repository covering RFQ, vendor quotation comparison (ME49) to identify lowest-priced suppliers, PO creation (ME21N), Goods Receipt (MIGO), inventory checks (MMBE), and Invoice Verification (MIRO).
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="badge">ME21N</span>
+                <span class="badge">ME49</span>
+                <span class="badge">MIGO</span>
+                <span class="badge">MIRO</span>
+                <span class="badge">MMBE</span>
+              </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+              <a href="https://github.com/rselvamani360-ai/SAP-MM-End-to-End-Procurement" target="_blank" class="text-xs font-bold text-brand-600 hover:text-brand-800 inline-flex items-center gap-1">
+                View GitHub Repo <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+              <span class="text-[11px] text-slate-400 font-medium">Hands-on SOP</span>
+            </div>
+          </div>
+
+          <!-- PROJECT 2: Supplier Quality & Defect Analysis -->
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-element border border-slate-200">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge border-emerald-200 bg-emerald-50 text-emerald-700">Quality & Power BI</span>
+                <a href="https://www.linkedin.com/pulse/sap-mm-excel-power-bi-supplier-quality-defect-analysis-selvamani-r-uonpc/" target="_blank" class="text-slate-400 hover:text-blue-600 transition">
+                  <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">Supplier Quality & Defect Analysis</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Analyzed procurement and quality data for 2,000 received units across four materials. Identified 47 defects (2.35%), conducted Pareto Analysis and Fishbone root-cause diagrams, and deployed Power BI dashboards for vendor quality tracking.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="badge">7 QC Tools</span>
+                <span class="badge">Pareto</span>
+                <span class="badge">Excel</span>
+                <span class="badge">Power BI</span>
+              </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+              <a href="https://www.linkedin.com/pulse/sap-mm-excel-power-bi-supplier-quality-defect-analysis-selvamani-r-uonpc/" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1">
+                Read Publication <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+              <span class="text-[11px] text-slate-400 font-medium">LinkedIn Pulse</span>
+            </div>
+          </div>
+
+          <!-- PROJECT 3: SAP HANA Sales Analytics Dashboard -->
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-element border border-slate-200">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge border-indigo-200 bg-indigo-50 text-indigo-700">SAP HANA & DAX</span>
+                <a href="https://github.com/rselvamani360-ai/SAP-HANA-PowerBI-End-to-End-Project" target="_blank" class="text-slate-400 hover:text-slate-900 transition">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+              </div>
+              <h4 class="font-bold text-slate-900 text-lg mb-2">SAP HANA Sales Analytics Dashboard</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Configured a Linux SAP environment using Oracle VirtualBox. Managed HANA Studio database objects, validated 1,000+ CSV business records, executed SQL queries, and integrated with Power BI using DAX KPI formulations.
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                <span class="badge">SAP HANA</span>
+                <span class="badge">Power BI</span>
+                <span class="badge">DAX</span>
+                <span class="badge">SQL</span>
+                <span class="badge">Linux</span>
+              </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+              <a href="https://github.com/rselvamani360-ai/SAP-HANA-PowerBI-End-to-End-Project" target="_blank" class="text-xs font-bold text-brand-600 hover:text-brand-800 inline-flex items-center gap-1">
+                View GitHub Repo <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+              <span class="text-[11px] text-slate-400 font-medium">Full Pipeline</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION & INTERNSHIP SECTION -->
+    <section id="education" class="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50/50 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal-heading">
+          <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">Background</h2>
+          <h3 class="text-3xl font-extrabold text-slate-900">Education & Industry Experience</h3>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal-group">
+          <div class="space-y-4">
+            <h4 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-brand-600"></i> Academic Qualifications
+            </h4>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">Master of Business Administration (MBA)</h5>
+                <span class="badge bg-blue-50 text-blue-700">2024 – 2026</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">Sathyabama Institute of Science and Technology</p>
+              <p class="text-xs font-bold text-brand-600 mt-1">CGPA: 8.16</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">B.E. Mechanical Engineering</h5>
+                <span class="badge bg-blue-50 text-blue-700">2021 – 2024</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">Panimalar Engineering College</p>
+              <p class="text-xs font-bold text-brand-600 mt-1">CGPA: 8.49</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">Diploma in Mechanical Engineering</h5>
+                <span class="badge bg-blue-50 text-blue-700">2019 – 2021</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">Panimalar Polytechnic College</p>
+              <p class="text-xs font-bold text-brand-600 mt-1">Percentage: 92%</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h4 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+              <i data-lucide="briefcase" class="w-5 h-5 text-brand-600"></i> Practical Experience & Trainings
+            </h4>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">HR and Operations Intern</h5>
+                <span class="badge bg-emerald-50 text-emerald-700">Sep 2025 – Oct 2025</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">Atandra Energy Private Limited</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Supported apprenticeship recruitment through NATS and NAPS portals, managed candidate onboarding documentation, maintained HR records, and generated operational status reports.
+              </p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">SAP MM Functional Training</h5>
+                <span class="badge bg-purple-50 text-purple-700">Aug 2026</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">ACTE Technologies (Certificate Issued)</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Comprehensive training covering Procurement lifecycle, PO releases, pricing schema, vendor evaluations, and SAP MM integration with FI/SD modules.
+              </p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl">
+              <div class="flex justify-between items-start mb-1">
+                <h5 class="font-bold text-slate-900 text-base">SAP S/4HANA Sourcing & Procurement</h5>
+                <span class="badge bg-purple-50 text-purple-700">Aug 2026</span>
+              </div>
+              <p class="text-xs font-medium text-slate-600">SAP Learning (Course Completed)</p>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Fundamentals of sourcing, requisitioning, operational procurement, and modern cloud business processes in SAP S/4HANA.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH & PUBLICATIONS SECTION -->
+    <section id="publications" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal-heading">
+          <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">Research & Publication</h2>
+          <h3 class="text-3xl font-extrabold text-slate-900">Research & Academic Contribution</h3>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+          <div class="glass-card p-6 rounded-2xl flex gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <i data-lucide="file-text" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="badge border-amber-200 bg-amber-50 text-amber-800 text-[11px]">IJSREM Publication</span>
+                <span class="badge bg-emerald-50 text-emerald-700 text-[11px]">Best Paper Award</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-base mb-1">A Comparative Study on Fully Automated Recruitment Communication and AI-Assisted Human Recruitment Communication</h4>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Conducted mixed-method analysis involving 132 respondents. Applied SPSS, SmartPLS, Minitab, thematic analysis, and netnography to analyze interaction paradigms. Awarded Best Paper at an International Conference.
+              </p>
+              <a href="https://ijsrem.com/download/a-comparative-study-on-fully-automated-recruitment-communication-and-ai-assisted-human-recruitment-communication-using-mixed-method-analysis" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold hover:bg-amber-100 transition-colors">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Read Published Paper
+              </a>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-200/60 scroll-section scroll-mt-20">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-2">Contact & Inquiries</h2>
+        <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Let's Connect for SAP MM & Analytics Opportunities</h3>
+        <p class="text-slate-600 mb-8 max-w-lg mx-auto text-sm sm:text-base">
+          Feel free to reach out via email or LinkedIn for full-time opportunities, collaborations, or professional discussions.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-8">
+          <a href="mailto:rselvamani360@gmail.com" class="px-6 py-3.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold text-sm flex items-center gap-2 shadow-md shadow-brand-600/20 transition active:scale-95">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Email Me</span>
+          </a>
+
+          <a href="https://www.linkedin.com/in/selvamani-r-50941333a" target="_blank" class="px-6 py-3.5 bg-[#0a66c2] hover:bg-[#084e96] text-white rounded-xl font-semibold text-sm flex items-center gap-2 shadow-md transition active:scale-95">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+            <span>LinkedIn Profile</span>
+          </a>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-100/70 inline-flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-700 font-medium">
+          <span class="flex items-center gap-1.5"><i data-lucide="mail" class="w-4 h-4 text-slate-400"></i> rselvamani360@gmail.com</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-slate-400"></i> Chennai, Tamil Nadu, India</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-8 border-t border-slate-200/80 bg-white text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 Selvamani R. Hosted via GitHub Pages.</p>
+      <div class="flex items-center gap-4">
+        <a href="#hero" class="hover:text-slate-900 transition">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- THREE.JS 3D CANVAS SCRIPT -->
+  <script>
+    lucide.createIcons();
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // Three.js 3D Background (Ultra-optimized for Android & Desktop)
+    const canvas = document.getElementById('webgl-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 25;
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Torus Knot Geometric Mesh
+    const torusGeometry = new THREE.TorusKnotGeometry(7, 1.8, 80, 16);
+    const torusMaterial = new THREE.MeshBasicMaterial({
+      color: 0x93c5fd,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.2
+    });
+    const torusKnot = new THREE.Mesh(torusGeometry, torusMaterial);
+    group.add(torusKnot);
+
+    // Inner Icosahedron
+    const innerGeom = new THREE.IcosahedronGeometry(4, 1);
+    const innerMat = new THREE.MeshBasicMaterial({
+      color: 0x3b82f6,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.14
+    });
+    const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+    group.add(innerMesh);
+
+    // Floating Particles
+    const particleCount = window.innerWidth < 768 ? 40 : 85;
+    const particleGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 45;
+      positions[i + 1] = (Math.random() - 0.5) * 45;
+      positions[i + 2] = (Math.random() - 0.5) * 20;
+    }
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0x2563eb,
+      size: 0.18,
+      transparent: true,
+      opacity: 0.45
+    });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // Dynamic Mouse and Touch Movement
+    let targetX = 0;
+    let targetY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (e) => {
+      targetX = (e.clientX - windowHalfX) * 0.0006;
+      targetY = (e.clientY - windowHalfY) * 0.0006;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        targetX = (e.touches[0].clientX - windowHalfX) * 0.0008;
+        targetY = (e.touches[0].clientY - windowHalfY) * 0.0008;
+      }
+    }, { passive: true });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      torusKnot.rotation.x += 0.0015;
+      torusKnot.rotation.y += 0.002;
+      innerMesh.rotation.x -= 0.002;
+      innerMesh.rotation.y -= 0.0025;
+      particles.rotation.y += 0.0005;
+
+      group.rotation.y += 0.05 * (targetX - group.rotation.y);
+      group.rotation.x += 0.05 * (targetY - group.rotation.x);
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from(".hero-anim", {
+      opacity: 0,
+      y: 35,
+      stagger: 0.2,
+      duration: 1.1,
+      ease: "power3.out"
+    });
+
+    // Smooth, layered scroll transitions
+    document.querySelectorAll(".scroll-section").forEach((section) => {
+      const heading = section.querySelector(".reveal-heading");
+      const groups = section.querySelectorAll(".reveal-group");
+
+      gsap.fromTo(section,
+        { opacity: 1, y: 0 },
+        {
+          opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
+          scrollTrigger: { trigger: section, start: "top 88%", toggleActions: "play none none none" }
+        }
+      );
+
+      if (heading) {
+        gsap.fromTo(heading,
+          { opacity: 0, y: 30, scale: 0.98 },
+          {
+            opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out",
+            scrollTrigger: { trigger: heading, start: "top 88%", toggleActions: "play none none none" }
+          }
+        );
+      }
+
+      groups.forEach((group) => {
+        const cards = group.querySelectorAll(".reveal-card");
+        if (!cards.length) return;
+        gsap.fromTo(cards,
+          { opacity: 0, y: 45, scale: 0.96 },
+          {
+            opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.12, ease: "power3.out",
+            scrollTrigger: { trigger: group, start: "top 86%", toggleActions: "play none none none" }
+          }
+        );
+      });
+    });
+
+    // Extra project/card micro-parallax while scrolling
+    document.querySelectorAll(".reveal-card").forEach((card) => {
+      card.addEventListener("mouseenter", () => {
+        gsap.to(card, { y: -6, duration: 0.25, ease: "power2.out", overwrite: true });
+      });
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, { y: 0, duration: 0.35, ease: "power2.out", overwrite: true });
+      });
+    });
+
+    if (window.innerWidth > 1024) {
+      VanillaTilt.init(document.querySelectorAll(".tilt-element"), {
+        max: 8,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.15
+      });
+    }
+  </script>
+
+</body>
+</html>
